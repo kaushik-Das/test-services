@@ -1,5 +1,7 @@
 package com.dadamohit.userservice.models;
 
+import com.vladmihalcea.hibernate.type.array.ListArrayType;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,11 +14,16 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.TypeDefs;
 
 @NoArgsConstructor
 @Data
-@Entity(name = "User")
+@Entity(name = "users")
 @Table(name = "users")
+@TypeDefs({@TypeDef(name="string",defaultForType=java.lang.String.class,typeClass=org.hibernate.type.TextType.class)})
+@TypeDef(name = "list-array", typeClass = ListArrayType.class)
 public class User {
 
   @Id
@@ -34,8 +41,8 @@ public class User {
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "address_id", referencedColumnName = "id")
   private Address address;
-  /*private ByteBuffer aadharCard;
 
-  @Column(name = "first_name")
-  private ByteBuffer profilePic;*/
+  @Type(type = "list-array")
+  @Column(name = "media_ids", columnDefinition = "text[]")
+  private List<String> medias;
 }
