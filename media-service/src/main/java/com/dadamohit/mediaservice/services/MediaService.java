@@ -36,8 +36,9 @@ public class MediaService {
     GridFSFile file = gridFsTemplate.findOne(new Query(Criteria.where("_id").is(id)));
     final String fileName = file.getMetadata().get("name").toString();
     final String fileType = file.getMetadata().get("type").toString();
+    final String userId = file.getMetadata().get("userId").toString();
     final byte[] content = gridFsOperations.getResource(file).getContent().readAllBytes();
-    Media media = new Media(fileName, fileType, content);
+    Media media = new Media(userId, fileName, fileType, content);
     return media;
   }
 
